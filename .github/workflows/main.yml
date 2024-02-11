@@ -1,0 +1,35 @@
+name: build
+on: [pull_request, push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+      - name: make gradle wrapper executable
+        run: chmod +x ./gradlew
+        
+      - name : Build with Gradle
+        run: |
+          ./gradlew build --stacktrace
+
+      - name: capture Forge build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Forge
+          path: forge/build/libs/
+          
+      - name: capture Fabric build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Fabric
+          path: fabric/build/libs/
