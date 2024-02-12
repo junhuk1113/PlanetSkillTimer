@@ -1,6 +1,12 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
 }
+
+def baseArchivesName = "${archives_base_name}-${minecraft_version}-forge"
+base {
+    archivesName.set(baseArchivesName)
+}
+
 loom {
     forge {
         mixinConfig "planetskilltimer-common.mixins.json"
