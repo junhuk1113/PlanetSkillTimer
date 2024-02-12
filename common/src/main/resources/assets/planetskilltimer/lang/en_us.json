@@ -1,0 +1,12 @@
+{
+  "planetskilltimer.config.enable" : "ON",
+  "planetskilltimer.config.disable" : "OFF",
+  "planetskilltimer.config.skilltimer" : "SkillTimer :",
+  "planetskilltimer.config.sound" : "SoundAlert :",
+  "planetskilltimer.config.farming" : "재보충 : ",
+  "planetskilltimer.config.felling" : "벌목기 : ",
+  "planetskilltimer.config.mining" : "빠른 채광 : ",
+  "planetskilltimer.config.digging" : "지형 수정 : ",
+  "planetskilltimer.config.exit" : "Complete",
+  "planetskilltimer.key.open_settings" : "PlanetSkillTimer Setting"
+}

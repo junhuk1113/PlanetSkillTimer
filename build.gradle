@@ -21,6 +21,19 @@ subprojects {
         // The following line declares the yarn mappings you may select this one as well.
         mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     }
+
+    tasks.withType(ProcessResources) {
+        // this will ensure that this task is redone when the versions change.
+        inputs.property("version", version)
+        filesMatching(["META-INF/mods.toml", "pack.mcmeta", "fabric.mod.json"]) {
+            expand([
+                    "modAuthor"     : modAuthor,
+                    "modCredits"    : modCredits,
+                    "githubUrl"     : githubUrl,
+                    "version"       : version
+            ])
+        }
+    }
 }
 
 allprojects {

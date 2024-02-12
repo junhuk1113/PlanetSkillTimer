@@ -5,17 +5,21 @@
 
   "name": "PlanetSkillTimer",
   "description": "마인플레닛 서버 스탯 시스템의 스킬 쿨타임을 카운트해주는 모드입니다.",
-  "authors": [],
-  "contact": {},
+  "authors": ["${modAuthor}"],
+  "contributors": [
+    "${modCredits}"
+  ],
+  "contact": {"sources": "${githubUrl}"},
 
   "license": "MIT",
-  "icon": "icon.png",
+  "icon": "assets/planetskilltimer/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
       "net.pmkjun.planetskilltimer.fabric.PlanetSkillTimerFabric"
-    ]
+    ],
+    "modmenu": ["net.pmkjun.planetskilltimer.fabric.config.SkillTimerModMenu"]
   },
   "mixins": [
     "planetskilltimer.mixins.json",
