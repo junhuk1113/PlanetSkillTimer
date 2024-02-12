@@ -1,4 +1,4 @@
-package net.pmkjun.planetskilltimer.mixin;
+package net.pmkjun.planetskilltimer.fabric.mixin;
 
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;

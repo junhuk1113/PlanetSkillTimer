@@ -1,0 +1,39 @@
+package net.pmkjun.planetskilltimer.forge.input;
+
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.pmkjun.planetskilltimer.PlanetSkillTimerClient;
+import net.pmkjun.planetskilltimer.config.ConfigScreen;
+import net.pmkjun.planetskilltimer.input.IKeyMappings;
+
+public class KeyMappings implements IKeyMappings {
+    public static KeyBinding openSettingScreen =
+            new KeyBinding("fishhelper.key.open_settings", 74, "fishhelper.key.category");
+
+    @Override
+    public void register() {
+        MinecraftForge.EVENT_BUS.register(this);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(KeyMappings::registerKeyBindings);
+    }
+
+    public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
+        event.register(openSettingScreen);
+    }
+
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        MinecraftClient mc = MinecraftClient.getInstance();
+        PlanetSkillTimerClient client = PlanetSkillTimerClient.getInstance();
+
+        if(event.phase == TickEvent.Phase.END) {
+            while(openSettingScreen.wasPressed()) {
+                mc.setScreen(new ConfigScreen(mc.currentScreen));
+            }
+        }
+    }
+}

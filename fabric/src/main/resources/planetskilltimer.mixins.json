@@ -4,6 +4,7 @@
   "package": "net.pmkjun.planetskilltimer.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "GuiMixin"
   ],
   "client": [
   ],
