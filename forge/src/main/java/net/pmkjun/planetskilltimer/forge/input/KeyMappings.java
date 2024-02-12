@@ -13,7 +13,7 @@ import net.pmkjun.planetskilltimer.input.IKeyMappings;
 
 public class KeyMappings implements IKeyMappings {
     public static KeyBinding openSettingScreen =
-            new KeyBinding("fishhelper.key.open_settings", 74, "fishhelper.key.category");
+            new KeyBinding("planetskilltimer.key.open_settings", 74, "planetskilltimer.key.open_settings");
 
     @Override
     public void register() {

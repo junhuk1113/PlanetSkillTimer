@@ -8,7 +8,7 @@ import net.pmkjun.planetskilltimer.config.ConfigScreen;
 import net.pmkjun.planetskilltimer.input.IKeyMappings;
 
 public class KeyMappings implements IKeyMappings {
-    public static KeyBinding openSettingScreen = new KeyBinding("planetskilltimer.key.open_settings", 74, "fishhelper.key.category");
+    public static KeyBinding openSettingScreen = new KeyBinding("planetskilltimer.key.open_settings", 74, "planetskilltimer.key.open_settings");
 
     public void register() {
         MinecraftClient mc = MinecraftClient.getInstance();
