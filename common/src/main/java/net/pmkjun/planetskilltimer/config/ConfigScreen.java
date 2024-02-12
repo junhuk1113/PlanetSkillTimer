@@ -122,7 +122,7 @@ public class ConfigScreen extends Screen{
         this.addDrawableChild(YPosSlider);
     }
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
+        //this.renderBackground(context);
         XPosSlider.render(context,mouseX,mouseY,delta);
         YPosSlider.render(context,mouseX,mouseY,delta);
         super.render(context, mouseX, mouseY, delta);
