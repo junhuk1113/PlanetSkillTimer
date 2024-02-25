@@ -4,7 +4,7 @@ import net.pmkjun.planetskilltimer.PlanetSkillTimer;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.pmkjun.planetskilltimer.forge.input.KeyMappings;
-import net.pmkjun.planetskilltimer.common.config.ConfigScreen;
+import net.pmkjun.planetskilltimer.config.ConfigScreen;
 
 @Mod(PlanetSkillTimer.MOD_ID)
 public class PlanetSkillTimerForge {
