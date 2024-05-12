@@ -2,13 +2,9 @@ package net.pmkjun.planetskilltimer.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -21,7 +17,6 @@ import net.pmkjun.planetskilltimer.util.Timer;
 public class SkillTimerGui {
     private MinecraftClient mc;
     private PlanetSkillTimerClient client;
-    private TextRenderer font;
 
     public int one = 0;
     public int two = 0;

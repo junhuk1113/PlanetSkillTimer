@@ -7,7 +7,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.pmkjun.planetskilltimer.PlanetSkillTimerClient;
 import net.pmkjun.planetskilltimer.config.ConfigScreen;
 import net.pmkjun.planetskilltimer.input.IKeyMappings;
 
@@ -28,7 +27,6 @@ public class KeyMappings implements IKeyMappings {
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         MinecraftClient mc = MinecraftClient.getInstance();
-        PlanetSkillTimerClient client = PlanetSkillTimerClient.getInstance();
 
         if(event.phase == TickEvent.Phase.END) {
             while(openSettingScreen.wasPressed()) {
