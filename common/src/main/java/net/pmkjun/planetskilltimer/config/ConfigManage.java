@@ -6,9 +6,16 @@ import net.pmkjun.planetskilltimer.file.Data;
 import java.io.*;
 
 public class ConfigManage {
-    private static final String DATA_DIRECTORY_PATH = "\\PlanetSkillTimer";
+    private static String DATA_DIRECTORY_PATH = "\\PlanetSkillTimer";
 
-    private static final String DATA_FILE_PATH = "\\PlanetSkillTimer\\config.data";
+    private static String DATA_FILE_PATH = "\\PlanetSkillTimer\\config.data";
+
+    public ConfigManage(){
+        if(!System.getProperty("os.name").contains("Windows")){
+            DATA_DIRECTORY_PATH = "/PlanetSkillTimer";
+            DATA_FILE_PATH = DATA_DIRECTORY_PATH + "/config.data";
+        }
+    }
 
     public void save() {
         save((PlanetSkillTimerClient.getInstance()).data);
