@@ -26,7 +26,7 @@ public abstract class chatMixin {
 
 		// This code is injected into the start of MinecraftServer.loadWorld()V
 		if(message.getString().contains(" 발동되었습니다!") && !message.getString().contains("|")){
-			System.out.println("변수 초기화 됨");
+			//System.out.println("변수 초기화 됨");
 			for (int i = 0; i < Skill.list.length ; i++)
 			{
 				if(message.getString().contains(Skill.list[i])){
