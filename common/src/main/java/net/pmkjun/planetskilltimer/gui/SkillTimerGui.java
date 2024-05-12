@@ -106,12 +106,12 @@ public class SkillTimerGui {
                 }
             }
 
-            System.out.println("one: " + one + " two:" + two + " three: " + thr);
+            //System.out.println("one: " + one + " two:" + two + " three: " + thr);
             poseStack.pop();
         }
         else if(remaining_cooldowntime > 0){
 
-            System.out.println("남은 스킬 쿨타임 : "+(remaining_cooldowntime/(double)1000)+"초");
+            //System.out.println("남은 스킬 쿨타임 : "+(remaining_cooldowntime/(double)1000)+"초");
             poseStack.push();
             poseStack.translate((3+getXpos()+22*i+8), (getYpos() + 8-1), 0.0F);
             poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
