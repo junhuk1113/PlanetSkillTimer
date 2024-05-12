@@ -1,14 +1,11 @@
 package net.pmkjun.planetskilltimer.gui.widget;
 
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.navigation.GuiNavigationPath;
 import net.minecraft.client.gui.navigation.GuiNavigationType;
 import net.minecraft.client.gui.widget.SliderWidget;
 import net.minecraft.client.input.KeyCodes;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.MathHelper;
-import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 public class Slider extends SliderWidget {
     Text text;
