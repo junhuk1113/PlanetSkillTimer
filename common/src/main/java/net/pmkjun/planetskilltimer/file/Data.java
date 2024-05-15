@@ -10,4 +10,5 @@ public class Data implements Serializable {
     public int SkillTimerYpos = 1000;
 
     public boolean toggleAlertSound = true;
+    public boolean toggleTpsCorrection = true;
 }
