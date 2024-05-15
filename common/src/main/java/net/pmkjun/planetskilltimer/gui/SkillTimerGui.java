@@ -13,6 +13,7 @@ import net.pmkjun.planetskilltimer.file.Stat;
 import net.pmkjun.planetskilltimer.util.SkillLevel;
 import net.pmkjun.planetskilltimer.util.Timeformat;
 import net.pmkjun.planetskilltimer.util.Timer;
+import net.pmkjun.planetskilltimer.util.TpsTracker;
 
 public class SkillTimerGui {
     private MinecraftClient mc;
@@ -130,7 +131,11 @@ public class SkillTimerGui {
 
 
         }
-
+        poseStack.push();
+        poseStack.translate((3+getXpos()+22*1+8), (this.mc.getWindow().getScaledHeight()/2), 0.0F);
+        poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
+        //context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal("TD:"+TpsTracker.INSTANCE.getTickDuration()), 0, 0, 16777215);
+        poseStack.pop();
 
     }
     private int getEnabledSkillCount(){
@@ -139,6 +144,19 @@ public class SkillTimerGui {
             if(toggleskill) count++;
         }
         return count;
+    }
+    public boolean isSkillCooldown(int skilltype, Timer timer){
+        long ms = timer.getDifference(client.data.lastSkillTime[skilltype]);
+
+        long remaining_activatetime, remaining_cooldowntime;
+        int activatetime, cooldowntime;
+
+        activatetime = SkillLevel.getActivateTime(skilltype,Stat.level[skilltype]);
+        cooldowntime = SkillLevel.getCooldownTime(skilltype, Stat.level[skilltype]);
+        remaining_activatetime = activatetime - ms;
+        remaining_cooldowntime = cooldowntime - (ms - activatetime);
+
+        return remaining_activatetime > 0 || remaining_cooldowntime > 0;
     }
     private int getXpos(){
         return (this.mc.getWindow().getScaledWidth()-(22*getEnabledSkillCount())) * this.client.data.SkillTimerXpos / 1000;
