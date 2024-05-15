@@ -2,13 +2,9 @@ package net.pmkjun.planetskilltimer.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.render.BufferBuilder;
-import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -22,7 +18,6 @@ import net.pmkjun.planetskilltimer.util.TpsTracker;
 public class SkillTimerGui {
     private MinecraftClient mc;
     private PlanetSkillTimerClient client;
-    private TextRenderer font;
 
     public int one = 0;
     public int two = 0;
@@ -139,7 +134,7 @@ public class SkillTimerGui {
         poseStack.push();
         poseStack.translate((3+getXpos()+22*1+8), (this.mc.getWindow().getScaledHeight()/2), 0.0F);
         poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
-        context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal("tps:"+TpsTracker.INSTANCE.getTickRate()), 0, 0, 16777215);
+        context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal("TD:"+TpsTracker.INSTANCE.getTickRate()), 0, 0, 16777215);
         poseStack.pop();
 
     }

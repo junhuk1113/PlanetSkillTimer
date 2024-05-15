@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
+import net.pmkjun.planetskilltimer.PlanetSkillTimerClient;
 
 public class TpsTracker {
 
@@ -15,6 +16,8 @@ public class TpsTracker {
     private int nextIndex = 0;
     private long timeLastTimeUpdate = -1;
     private long timeGameJoined;
+    private long tickDuration;
+    private final PlanetSkillTimerClient client = PlanetSkillTimerClient.getInstance();
 
     public float serverProvidedTps = -1;
 
@@ -22,9 +25,13 @@ public class TpsTracker {
         if (packet instanceof WorldTimeUpdateS2CPacket) {
             long now = System.currentTimeMillis();
             float timeElapsed = (float) (now - timeLastTimeUpdate) / 1000.0F;
+            tickDuration = now - timeLastTimeUpdate;
             tickRates[nextIndex] = clamp(20.0f / timeElapsed, 0.0f, 20.0f);
             nextIndex = (nextIndex + 1) % tickRates.length;
             timeLastTimeUpdate = now;
+            if(tickDuration > 1000){
+                client.delayLastSkilltime(tickDuration - 1000);
+            }
         }
     }
 
@@ -49,6 +56,14 @@ public class TpsTracker {
             }
         }
         return sumTickRates / numTicks;
+    }
+
+    public long getTickDuration() {
+        MinecraftClient mc = MinecraftClient.getInstance();
+        if (mc.player == null) return 0;
+        //if (System.currentTimeMillis() - timeGameJoined < 4000) return 4000;
+
+        return tickDuration;
     }
 
     private float clamp(float value, float min, float max) {
