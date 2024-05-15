@@ -35,8 +35,9 @@ public class PlanetSkillTimerClient {
         this.configManage.save();
     }
     public void delayLastSkilltime(long delay){
-        for(int i = 0; i < this.data.lastSkillTime.length; i++){
-            this.data.lastSkillTime[i] += delay;
+        for(int skilltype = 0; skilltype < this.data.lastSkillTime.length; skilltype++){
+            if(skillTimerGui.isSkillCooldown(skilltype, timer))
+                this.data.lastSkillTime[skilltype] += delay;
         }
     }
 

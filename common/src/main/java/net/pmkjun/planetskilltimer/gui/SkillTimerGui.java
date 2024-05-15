@@ -145,6 +145,19 @@ public class SkillTimerGui {
         }
         return count;
     }
+    public boolean isSkillCooldown(int skilltype, Timer timer){
+        long ms = timer.getDifference(client.data.lastSkillTime[skilltype]);
+
+        long remaining_activatetime, remaining_cooldowntime;
+        int activatetime, cooldowntime;
+
+        activatetime = SkillLevel.getActivateTime(skilltype,Stat.level[skilltype]);
+        cooldowntime = SkillLevel.getCooldownTime(skilltype, Stat.level[skilltype]);
+        remaining_activatetime = activatetime - ms;
+        remaining_cooldowntime = cooldowntime - (ms - activatetime);
+
+        return remaining_activatetime > 0 || remaining_cooldowntime > 0;
+    }
     private int getXpos(){
         return (this.mc.getWindow().getScaledWidth()-(22*getEnabledSkillCount())) * this.client.data.SkillTimerXpos / 1000;
     }
