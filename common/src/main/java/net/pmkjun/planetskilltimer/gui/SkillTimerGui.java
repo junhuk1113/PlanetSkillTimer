@@ -17,6 +17,7 @@ import net.pmkjun.planetskilltimer.file.Stat;
 import net.pmkjun.planetskilltimer.util.SkillLevel;
 import net.pmkjun.planetskilltimer.util.Timeformat;
 import net.pmkjun.planetskilltimer.util.Timer;
+import net.pmkjun.planetskilltimer.util.TpsTracker;
 
 public class SkillTimerGui {
     private MinecraftClient mc;
@@ -135,7 +136,11 @@ public class SkillTimerGui {
 
 
         }
-
+        poseStack.push();
+        poseStack.translate((3+getXpos()+22*1+8), (this.mc.getWindow().getScaledHeight()/2), 0.0F);
+        poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
+        context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal("tps:"+TpsTracker.INSTANCE.getTickRate()), 0, 0, 16777215);
+        poseStack.pop();
 
     }
     private int getEnabledSkillCount(){
