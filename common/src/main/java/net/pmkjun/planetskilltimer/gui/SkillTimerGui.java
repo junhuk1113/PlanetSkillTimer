@@ -132,12 +132,6 @@ public class SkillTimerGui {
 
 
         }
-        poseStack.push();
-        poseStack.translate((3+getXpos()+22*1+8), (this.mc.getWindow().getScaledHeight()/2), 0.0F);
-        poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
-        //context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal("TD:"+TpsTracker.INSTANCE.getTickDuration()), 0, 0, Formatting.WHITE.getColorValue());
-        poseStack.pop();
-
     }
     private int getEnabledSkillCount(){
         int count = 0;
