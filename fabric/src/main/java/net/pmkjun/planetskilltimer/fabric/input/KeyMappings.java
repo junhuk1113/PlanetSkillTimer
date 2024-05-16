@@ -4,11 +4,12 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.pmkjun.planetskilltimer.config.ConfigScreen;
 import net.pmkjun.planetskilltimer.input.IKeyMappings;
 
 public class KeyMappings implements IKeyMappings {
-    public static KeyBinding openSettingScreen = new KeyBinding("planetskilltimer.key.open_settings", 74, "planetskilltimer.key.open_settings");
+    public static KeyBinding openSettingScreen = new KeyBinding("planetskilltimer.key.open_settings", InputUtil.GLFW_KEY_J, "planetskilltimer.key.open_settings");
 
     public void register() {
         MinecraftClient mc = MinecraftClient.getInstance();
