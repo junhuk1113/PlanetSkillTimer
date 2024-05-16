@@ -7,6 +7,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.pmkjun.planetskilltimer.PlanetSkillTimerClient;
 import net.pmkjun.planetskilltimer.file.Stat;
@@ -78,7 +79,7 @@ public class SkillTimerGui {
             poseStack.push();
             poseStack.translate((3+getXpos()+22*i+8), (getYpos() + 8-1), 0.0F);
             poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
-            context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal(Timeformat.getString(remaining_activatetime)), 0, 0, 16777215);
+            context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal(Timeformat.getString(remaining_activatetime)), 0, 0, Formatting.WHITE.getColorValue());
             if (client.data.toggleAlertSound) {
                 if(remaining_activatetime/(double)1000 <= 1 && one == 0 && remaining_activatetime/(double)1000 > 0.2){
                     this.mc.world.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1f, 1f);
@@ -115,7 +116,7 @@ public class SkillTimerGui {
             poseStack.push();
             poseStack.translate((3+getXpos()+22*i+8), (getYpos() + 8-1), 0.0F);
             poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
-            context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal(Timeformat.getString(remaining_cooldowntime)), 0, 0, 16777215);
+            context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal(Timeformat.getString(remaining_cooldowntime)), 0, 0, Formatting.WHITE.getColorValue());
             poseStack.pop();
             if (client.data.toggleAlertSound) {
                 if (remaining_cooldowntime / (double) 1000 < 0.1 && remaining_cooldowntime / (double) 1000 > 0.05 && coolend == 0) {
@@ -139,6 +140,19 @@ public class SkillTimerGui {
             if(toggleskill) count++;
         }
         return count;
+    }
+    public boolean isSkillCooldown(int skilltype, Timer timer){
+        long ms = timer.getDifference(client.data.lastSkillTime[skilltype]);
+
+        long remaining_activatetime, remaining_cooldowntime;
+        int activatetime, cooldowntime;
+
+        activatetime = SkillLevel.getActivateTime(skilltype,Stat.level[skilltype]);
+        cooldowntime = SkillLevel.getCooldownTime(skilltype, Stat.level[skilltype]);
+        remaining_activatetime = activatetime - ms;
+        remaining_cooldowntime = cooldowntime - (ms - activatetime);
+
+        return remaining_activatetime > 0 || remaining_cooldowntime > 0;
     }
     private int getXpos(){
         return (this.mc.getWindow().getScaledWidth()-(22*getEnabledSkillCount())) * this.client.data.SkillTimerXpos / 1000;

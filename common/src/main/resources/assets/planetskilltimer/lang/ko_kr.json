@@ -8,5 +8,6 @@
   "planetskilltimer.config.mining" : "빠른 채광 : ",
   "planetskilltimer.config.digging" : "지형 수정 : ",
   "planetskilltimer.config.exit" : "완료",
+  "planetskilltimer.config.tpscorrection" : "TPS 보정 : ",
   "planetskilltimer.key.open_settings" : "PlanetSkillTimer 설정"
 }

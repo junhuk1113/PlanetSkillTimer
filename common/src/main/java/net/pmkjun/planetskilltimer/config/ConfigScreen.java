@@ -19,6 +19,7 @@ public class ConfigScreen extends Screen{
     private ButtonWidget toggleSkillTimerButton;
     private ButtonWidget toggleAlertSoundButton;
     private ButtonWidget[] toggleSkillsButton = new ButtonWidget[4];
+    private ButtonWidget toggleTpsCorrectionButton;
     String[] SkillList = {"farming","felling","mining","digging"};
     private Slider XPosSlider;
     private Slider YPosSlider;
@@ -31,7 +32,7 @@ public class ConfigScreen extends Screen{
         this.client = PlanetSkillTimerClient.getInstance();
 
         this.width = 150;
-        this.height = (20 + 2) * 8;
+        this.height = (20 + 2) * 9;
     }
     @Override
     protected void init() {
@@ -101,7 +102,7 @@ public class ConfigScreen extends Screen{
 
         ButtonWidget exitButton = ButtonWidget.builder(Text.translatable("planetskilltimer.config.exit"), button -> {
             mc.setScreen(parentScreen);
-        }).dimensions(mc.getWindow().getScaledWidth() / 2 - 35, mc.getWindow().getScaledHeight() - 25, 70, 20).build();
+        }).dimensions(mc.getWindow().getScaledWidth() / 2 - 35, mc.getWindow().getScaledHeight() - 22, 70, 20).build();
         this.addDrawableChild(exitButton);
 
         XPosSlider = new Slider(getRegularX(), getRegularY()+(20+2)*6,150,20,Text.literal("X : "),0,1000,this.client.data.SkillTimerXpos){
@@ -120,6 +121,12 @@ public class ConfigScreen extends Screen{
             }
         };
         this.addDrawableChild(YPosSlider);
+        toggleTpsCorrectionButton = ButtonWidget.builder(Text.translatable("planetskilltimer.config.tpscorrection"), button -> {
+            toggleTpsCorrection();
+            setTpsCorrectionButtonText();
+        }).dimensions(getRegularX(), getRegularY()+(20+2)*8, 150, 20).build();
+        setTpsCorrectionButtonText();
+        this.addDrawableChild(toggleTpsCorrectionButton);
     }
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         //this.renderBackground(context);
@@ -172,7 +179,19 @@ public class ConfigScreen extends Screen{
             client.configManage.save();
         }
     }
-
+    private void toggleTpsCorrection(){
+        client.data.toggleTpsCorrection = !client.data.toggleTpsCorrection;
+    }
+    private void setTpsCorrectionButtonText(){
+        if(client.data.toggleTpsCorrection){
+            toggleTpsCorrectionButton.setMessage(Text.translatable("planetskilltimer.config.tpscorrection").append(
+                Text.translatable("planetskilltimer.config.enable").getWithStyle(Style.EMPTY.withFormatting(Formatting.GREEN).withBold(true)).get(0)));
+        }
+        else{
+            toggleTpsCorrectionButton.setMessage(Text.translatable("planetskilltimer.config.tpscorrection").append(
+                Text.translatable("planetskilltimer.config.disable").getWithStyle(Style.EMPTY.withFormatting(Formatting.RED).withBold(true)).get(0)));
+        }
+    }
     int getRegularX() {
         return  mc.getWindow().getScaledWidth() / 2 - width / 2;
     }
