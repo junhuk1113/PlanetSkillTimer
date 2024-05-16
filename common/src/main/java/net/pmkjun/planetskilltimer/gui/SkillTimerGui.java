@@ -7,6 +7,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.pmkjun.planetskilltimer.PlanetSkillTimerClient;
 import net.pmkjun.planetskilltimer.file.Stat;
@@ -79,7 +80,7 @@ public class SkillTimerGui {
             poseStack.push();
             poseStack.translate((3+getXpos()+22*i+8), (getYpos() + 8-1), 0.0F);
             poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
-            context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal(Timeformat.getString(remaining_activatetime)), 0, 0, 16777215);
+            context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal(Timeformat.getString(remaining_activatetime)), 0, 0, Formatting.WHITE.getColorValue());
             if (client.data.toggleAlertSound) {
                 if(remaining_activatetime/(double)1000 <= 1 && one == 0 && remaining_activatetime/(double)1000 > 0.2){
                     this.mc.world.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1f, 1f);
@@ -116,7 +117,7 @@ public class SkillTimerGui {
             poseStack.push();
             poseStack.translate((3+getXpos()+22*i+8), (getYpos() + 8-1), 0.0F);
             poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
-            context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal(Timeformat.getString(remaining_cooldowntime)), 0, 0, 16777215);
+            context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal(Timeformat.getString(remaining_cooldowntime)), 0, 0, Formatting.WHITE.getColorValue());
             poseStack.pop();
             if (client.data.toggleAlertSound) {
                 if (remaining_cooldowntime / (double) 1000 < 0.1 && remaining_cooldowntime / (double) 1000 > 0.05 && coolend == 0) {
@@ -134,7 +135,7 @@ public class SkillTimerGui {
         poseStack.push();
         poseStack.translate((3+getXpos()+22*1+8), (this.mc.getWindow().getScaledHeight()/2), 0.0F);
         poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
-        //context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal("TD:"+TpsTracker.INSTANCE.getTickDuration()), 0, 0, 16777215);
+        //context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal("TD:"+TpsTracker.INSTANCE.getTickDuration()), 0, 0, Formatting.WHITE.getColorValue());
         poseStack.pop();
 
     }
