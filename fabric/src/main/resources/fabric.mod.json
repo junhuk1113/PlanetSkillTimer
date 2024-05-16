@@ -28,5 +28,8 @@
   "depends": {
     "fabricloader": ">=0.14.21",
     "minecraft": ">=1.20"
+  },
+  "dependencies": {
+    "yet_another_config_lib_v3": "*"
   }
 }
