@@ -23,8 +23,8 @@ public abstract class chatMixin {
 
 	@Shadow @Final private MinecraftClient client;
 
-	@Inject(at = @At("RETURN"), method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V")
-	public void addMessageMixin(Text message, @Nullable MessageSignatureData signature, @Nullable MessageIndicator indicator, CallbackInfo ci) {
+	@Inject(at = @At("RETURN"), method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V")
+	private void addMessageMixin(Text message, @Nullable MessageSignatureData signature, int ticks, @Nullable MessageIndicator indicator, boolean refresh, CallbackInfo ci) {
 
 		// This code is injected into the start of MinecraftServer.loadWorld()V
 		if(message.getString().contains(" 발동되었습니다!") && !message.getString().contains("|")){
@@ -37,6 +37,6 @@ public abstract class chatMixin {
 				}
 			}
 		}
-		//System.out.println(message.getString());
+		System.out.println(message.getString());
 	}
 }
