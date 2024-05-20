@@ -2,9 +2,13 @@ package net.pmkjun.planetskilltimer.mixin;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.ChatHud;
+import net.minecraft.client.gui.hud.MessageIndicator;
+import net.minecraft.network.message.MessageSignatureData;
 import net.minecraft.text.Text;
 import net.pmkjun.planetskilltimer.PlanetSkillTimerClient;
 import net.pmkjun.planetskilltimer.file.Skill;
+
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -19,8 +23,8 @@ public abstract class chatMixin {
 
 	@Shadow @Final private MinecraftClient client;
 
-	@Inject(at = @At("RETURN"), method = "addMessage(Lnet/minecraft/text/Text;)V")
-	public void addMessageMixin(Text message, CallbackInfo ci) {
+	@Inject(at = @At("RETURN"), method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;Lnet/minecraft/client/gui/hud/MessageIndicator;)V")
+	public void addMessageMixin(Text message, @Nullable MessageSignatureData signature, @Nullable MessageIndicator indicator, CallbackInfo ci) {
 
 		// This code is injected into the start of MinecraftServer.loadWorld()V
 		if(message.getString().contains(" 발동되었습니다!") && !message.getString().contains("|")){

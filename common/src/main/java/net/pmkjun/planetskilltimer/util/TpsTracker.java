@@ -29,7 +29,7 @@ public class TpsTracker {
             tickRates[nextIndex] = clamp(20.0f / timeElapsed, 0.0f, 20.0f);
             nextIndex = (nextIndex + 1) % tickRates.length;
             timeLastTimeUpdate = now;
-            if(tickDuration > 1000 && this.client.data.toggleTpsCorrection){
+            if(tickDuration > 1000 && tickDuration < 100000 && this.client.data.toggleTpsCorrection){
                 client.delayLastSkilltime(tickDuration - 1000);
             }
         }
