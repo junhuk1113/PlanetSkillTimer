@@ -10,13 +10,13 @@ public class SkillLevel {
     };
     public static int getActivateTime(int skilltype, int skilllevel){
         if(skilllevel / 7 == 0) return 0;
-        if(skilllevel > 97) skilllevel = 97;
+        if(skilllevel > 100) skilllevel = 100;
         if(skilltype == 0 && skilllevel > 56) skilllevel = 56;
         return skillTimetable[skilltype][0] + (skilllevel / 7 - 1) * skillTimetable[skilltype][1];
     }
     public static int getCooldownTime(int skilltype, int skilllevel){
         if(skilllevel / 7 == 0) return 0;
-        if(skilllevel > 97) skilllevel = 97;
+        if(skilllevel > 100) skilllevel = 100;
         if(skilltype == 0 && skilllevel > 56) skilllevel = 56;
         return skillTimetable[skilltype][2] - (skilllevel / 7 - 1) * skillTimetable[skilltype][3];
     }
