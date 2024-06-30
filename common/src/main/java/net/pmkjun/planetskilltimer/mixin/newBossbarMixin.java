@@ -1,28 +1,25 @@
 package net.pmkjun.planetskilltimer.mixin;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.hud.BossBarHud;
-import net.minecraft.entity.boss.BossBar;
-import net.minecraft.network.packet.s2c.play.BossBarS2CPacket;
-import net.minecraft.text.Text;
-import net.pmkjun.planetskilltimer.file.Skill;
-import net.pmkjun.planetskilltimer.file.Stat;
-import net.pmkjun.planetskilltimer.util.SkillLevel;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(BossBarHud.class)
-public class bossbarMixin {
-    MinecraftClient mc = MinecraftClient.getInstance();
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.boss.BossBar;
+import net.minecraft.text.Text;
+import net.pmkjun.planetskilltimer.file.Skill;
+import net.pmkjun.planetskilltimer.file.Stat;
+import net.pmkjun.planetskilltimer.util.SkillLevel;
 
-    @Inject(method = "Lnet/minecraft/client/gui/hud/BossBarHud;renderBossBar(Lnet/minecraft/client/gui/DrawContext;IILnet/minecraft/entity/boss/BossBar;II)V",at = {@At("RETURN")})
-    private void bossbarmixin(DrawContext context, int x, int y, BossBar bossBar, int width, int height, CallbackInfo cir){
-        mc.player.sendMessage(Text.literal("bossbar renderBossBar함수 실행됨"));
-        String bossbarText = bossBar.getName().getString();
+
+@Mixin(BossBar.class)
+public class newBossbarMixin {
+    MinecraftClient mc = MinecraftClient.getInstance();
+    @Inject(at = @At("RETURN"), method = "setName")
+    public void setName(Text name, CallbackInfo ci) {
+        mc.player.sendMessage(name);
+        String bossbarText = name.getString();
         String temp;
         if(bossbarText.contains("%)")){
             for (int i = 0; i < Stat.list.length ; i++)
@@ -53,11 +50,5 @@ public class bossbarMixin {
                 }
             }
         }
-    }
-
-    @Inject(method = "handlePacket", at={@At("RETURN")})
-    public void render(BossBarS2CPacket packet, CallbackInfo ci){
-        //mc.player.sendMessage(Text.literal("handlePacket 함수 실행됨"));
-
-    }
+     }
 }
