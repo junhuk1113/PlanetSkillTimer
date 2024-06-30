@@ -10,6 +10,8 @@ import net.pmkjun.planetskilltimer.file.Skill;
 import net.pmkjun.planetskilltimer.file.Stat;
 import net.pmkjun.planetskilltimer.util.SkillLevel;
 
+import java.lang.reflect.Field;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -58,6 +60,5 @@ public class bossbarMixin {
     @Inject(method = "handlePacket", at={@At("RETURN")})
     public void render(BossBarS2CPacket packet, CallbackInfo ci){
         //mc.player.sendMessage(Text.literal("handlePacket 함수 실행됨"));
-
     }
 }

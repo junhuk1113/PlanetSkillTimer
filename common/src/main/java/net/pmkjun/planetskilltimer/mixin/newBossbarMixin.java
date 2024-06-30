@@ -18,7 +18,7 @@ public class newBossbarMixin {
     MinecraftClient mc = MinecraftClient.getInstance();
     @Inject(at = @At("RETURN"), method = "setName")
     public void setName(Text name, CallbackInfo ci) {
-        mc.player.sendMessage(name);
+        //mc.player.sendMessage(name);
         String bossbarText = name.getString();
         String temp;
         if(bossbarText.contains("%)")){
