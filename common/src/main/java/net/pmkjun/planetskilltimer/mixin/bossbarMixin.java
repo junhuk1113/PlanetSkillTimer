@@ -24,7 +24,7 @@ public class bossbarMixin {
             for (int i = 0; i < Stat.list.length ; i++)
             {
                 if(bossbarText.contains(Stat.list[i])){
-                    System.out.println(bossbarText);
+                    //System.out.println(bossbarText);
                     temp=bossbarText.substring(bossbarText.indexOf(Stat.list[i]) +Stat.list[i].length()+1,bossbarText.indexOf("(")-1);
                     if(Integer.parseInt(temp) > Stat.level[i])
                     {
