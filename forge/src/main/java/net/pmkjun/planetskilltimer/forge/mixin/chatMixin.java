@@ -1,4 +1,4 @@
-package net.pmkjun.planetskilltimer.mixin;
+package net.pmkjun.planetskilltimer.forge.mixin;
 
 import net.minecraft.client.gui.hud.ChatHud;
 import net.minecraft.client.gui.hud.MessageIndicator;
