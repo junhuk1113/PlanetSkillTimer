@@ -27,12 +27,12 @@ public class SkillTimerGui {
 
 
     private static final Identifier[] SKILL_ICONS = {
-            new Identifier("planetskilltimer","skill_farming.png"),
-            new Identifier("planetskilltimer","skill_felling.png"),
-            new Identifier("planetskilltimer", "skill_mining.png"),
-            new Identifier("planetskilltimer","skill_digging.png")
+            Identifier.of("planetskilltimer","skill_farming.png"),
+            Identifier.of("planetskilltimer","skill_felling.png"),
+            Identifier.of("planetskilltimer", "skill_mining.png"),
+            Identifier.of("planetskilltimer","skill_digging.png")
     };
-    private static final Identifier WIDGETS = new Identifier("textures/gui/widgets.png");
+    private static final Identifier WIDGETS = Identifier.of("textures/gui/widgets.png");
 
     public SkillTimerGui(){
         this.mc = MinecraftClient.getInstance();
