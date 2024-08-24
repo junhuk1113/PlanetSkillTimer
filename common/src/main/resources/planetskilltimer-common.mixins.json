@@ -8,7 +8,8 @@
     "chatMixin",
     "ClientConnectionMixin",
     "ClientPlayNetworkHandlerMixin",
-    "GuiMixin"
+    "GuiMixin",
+    "BossBarHudAccessor"
   ],
   "client": [
   ],
