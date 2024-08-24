@@ -32,7 +32,7 @@ public class SkillTimerGui {
             new Identifier("planetskilltimer", "skill_mining.png"),
             new Identifier("planetskilltimer","skill_digging.png")
     };
-    private static final Identifier WIDGETS = new Identifier("textures/gui/widgets.png");
+    private static final Identifier WIDGETS = new Identifier("textures/gui/sprites/hud/hotbar_offhand_right.png");
 
     public SkillTimerGui(){
         this.mc = MinecraftClient.getInstance();
@@ -62,7 +62,7 @@ public class SkillTimerGui {
         remaining_activatetime = activatetime - ms;
         remaining_cooldowntime = cooldowntime - (ms - activatetime);
 
-        context.drawTexture(WIDGETS, getXpos()+22*i,getYpos(), 24, 23, 22, 22);
+        context.drawTexture(WIDGETS, getXpos()+22*i,getYpos(), 7, 1, 22, 22);
 
         poseStack.push();
         poseStack.translate(3+getXpos()+22*i,getYpos()+4-1,0.0D);
