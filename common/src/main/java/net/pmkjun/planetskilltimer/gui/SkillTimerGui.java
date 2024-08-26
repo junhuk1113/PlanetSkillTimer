@@ -27,12 +27,16 @@ public class SkillTimerGui {
 
 
     private static final Identifier[] SKILL_ICONS = {
-            Identifier.of("planetskilltimer","skill_farming.png"),
+            /*Identifier.of("planetskilltimer","skill_farming.png"),
             Identifier.of("planetskilltimer","skill_felling.png"),
             Identifier.of("planetskilltimer", "skill_mining.png"),
-            Identifier.of("planetskilltimer","skill_digging.png")
+            Identifier.of("planetskilltimer","skill_digging.png")*/
+            Identifier.ofVanilla("textures/item/golden_hoe.png"),
+            Identifier.ofVanilla("textures/item/diamond_axe.png"),
+            Identifier.ofVanilla("textures/item/netherite_pickaxe.png"),
+            Identifier.ofVanilla("textures/item/iron_shovel.png")
     };
-    private static final Identifier WIDGETS = Identifier.of("textures/gui/widgets.png");
+    private static final Identifier WIDGETS = Identifier.ofVanilla("hud/hotbar_offhand_left");
 
     public SkillTimerGui(){
         this.mc = MinecraftClient.getInstance();
@@ -62,8 +66,10 @@ public class SkillTimerGui {
         remaining_activatetime = activatetime - ms;
         remaining_cooldowntime = cooldowntime - (ms - activatetime);
 
-        context.drawTexture(WIDGETS, getXpos()+22*i,getYpos(), 24, 23, 22, 22);
-
+        RenderSystem.enableBlend(); // 블렌딩 활성화
+        RenderSystem.defaultBlendFunc();
+        context.drawGuiTexture(WIDGETS, getXpos()+22*i,getYpos()-1, 29, 24); //help gpt
+        RenderSystem.disableBlend();
         poseStack.push();
         poseStack.translate(3+getXpos()+22*i,getYpos()+4-1,0.0D);
         poseStack.scale(0.0625F, 0.0625F, 0.0625F);
