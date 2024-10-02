@@ -25,7 +25,7 @@ public abstract class chatMixin {
 
 	@Inject(at = @At("RETURN"), method = "addMessage(Lnet/minecraft/text/Text;Lnet/minecraft/network/message/MessageSignatureData;ILnet/minecraft/client/gui/hud/MessageIndicator;Z)V")
 	private void addMessageMixin(Text message, @Nullable MessageSignatureData signature, int ticks, @Nullable MessageIndicator indicator, boolean refresh, CallbackInfo ci) {
-		System.out.println("chat detected!");
+		//System.out.println("chat detected!");
 		// This code is injected into the start of MinecraftServer.loadWorld()V
 		if(message.getString().contains(" 발동되었습니다!") && !message.getString().contains("|")){
 			//System.out.println("변수 초기화 됨");
