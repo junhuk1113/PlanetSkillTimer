@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BossBarHud.class)
 public class bossbarMixin {
-    @Inject(method = "handlePacket", at={@At("RETURN")})
+    @Inject(method = "handlePacket", at={@At(value = "RETURN", ordinal = 0)})
     public void render(BossBarS2CPacket packet, CallbackInfo ci){
         MinecraftClient mc = MinecraftClient.getInstance();
         //mc.player.sendMessage(Text.literal("handlePacket 함수 실행됨"));
