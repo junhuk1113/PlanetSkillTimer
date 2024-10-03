@@ -21,7 +21,7 @@ public class ServerUnpacker{
 		Path destination = Paths.get(System.getProperty("user.dir"), "extracted-packs/");
 		try {
 			PackExtractor.extractPack(destination, file, name);
-			PackExtractor.createZip(destination, file, name);
+			PackExtractor.saveZipFile(destination, file, name+".zip");
 		} catch (Exception exception) {
 			LOGGER.error(exception);
 		}

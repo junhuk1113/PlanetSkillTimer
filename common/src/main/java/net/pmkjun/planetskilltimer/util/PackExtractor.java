@@ -46,38 +46,37 @@ public class PackExtractor {
             });
         }
     }
-    public static void createZip(Path destination, File source, String name) throws IOException {
-        createZip(destination, source, name, c -> {}, () -> {});
-    }
-    
-    public static void createZip(Path destination, File source, String name, LongConsumer itemCountConsumer, Runnable onItemFinished) throws IOException {
-        File zipFile = new File(destination.toFile(), name + ".zip");
-        zipFile.getParentFile().mkdirs();
-        try (ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipFile))) {
-            File[] files = source.listFiles();
-            if (files != null) {
-                itemCountConsumer.accept(files.length);
-                for (File file : files) {
-                    zipFile(file, zipOut, file.getName());
-                    onItemFinished.run();
-                }
-            } else {
-                System.out.println("Source directory is empty or not a directory.");
-            }
+    public static void saveZipFile(Path destination, File pack, String name) throws IOException {
+        Path newZipFilePath = destination.resolve(name);
+        System.out.println("Saving ZIP file to: " + newZipFilePath);
+
+        // 디렉터리 확인 및 생성
+        if (!destination.toFile().exists()) {
+            destination.toFile().mkdirs();
         }
-    }
-    
-    private static void zipFile(File file, ZipOutputStream zipOut, String fileName) throws IOException {
-        try (FileInputStream fis = new FileInputStream(file)) {
-            ZipEntry zipEntry = new ZipEntry(fileName);
-            zipOut.putNextEntry(zipEntry);
-            
-            byte[] buffer = new byte[4096];
-            int length;
-            while ((length = fis.read(buffer)) >= 0) {
-                zipOut.write(buffer, 0, length);
-            }
-            zipOut.closeEntry();
+
+        try (ZipFile zipFile = new ZipFile(pack);
+             ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(newZipFilePath.toFile()))) {
+
+            zipFile.stream().forEach(zipEntry -> {
+                try (BufferedInputStream inputStream = new BufferedInputStream(zipFile.getInputStream(zipEntry))) {
+                    ZipEntry newEntry = new ZipEntry(zipEntry.getName());
+                    zipOutputStream.putNextEntry(newEntry);
+                    
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        zipOutputStream.write(buffer, 0, bytesRead);
+                    }
+                    zipOutputStream.closeEntry();
+                } catch (IOException e) {
+                    System.err.println("Error processing entry: " + zipEntry.getName());
+                    e.printStackTrace();
+                }
+            });
+        } catch (IOException e) {
+            System.err.println("Error creating ZIP file: " + newZipFilePath);
+            e.printStackTrace();
         }
     }
 }
