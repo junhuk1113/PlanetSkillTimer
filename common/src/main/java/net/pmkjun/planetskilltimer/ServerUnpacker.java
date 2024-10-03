@@ -18,9 +18,8 @@ public class ServerUnpacker{
 
 		var info = MinecraftClient.getInstance().getCurrentServerEntry();
 		String name = info == null ? file.getName() : info.address;
-		Path destination = Paths.get(System.getProperty("user.dir"), "extracted-packs/");
+		Path destination = Paths.get(System.getProperty("user.dir"), "resourcepacks/");
 		try {
-			PackExtractor.extractPack(destination, file, name);
 			PackExtractor.saveZipFile(destination, file, name+".zip");
 		} catch (Exception exception) {
 			LOGGER.error(exception);

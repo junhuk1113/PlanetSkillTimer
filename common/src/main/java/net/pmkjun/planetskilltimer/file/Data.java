@@ -11,4 +11,6 @@ public class Data implements Serializable {
 
     public boolean toggleAlertSound = true;
     public boolean toggleTpsCorrection = true;
+
+    public String hash;
 }

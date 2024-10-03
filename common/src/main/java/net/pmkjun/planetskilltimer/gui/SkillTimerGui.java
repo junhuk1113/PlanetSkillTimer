@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.resource.ResourcePackManager;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
@@ -157,7 +158,14 @@ public class SkillTimerGui {
         return (this.mc.getWindow().getScaledWidth()-(22*getEnabledSkillCount())) * this.client.data.SkillTimerXpos / 1000;
     }
     private int getYpos(){
+        
+        ResourcePackManager manager =  mc.getResourcePackManager();
+
+        manager.enable("mineplanet.kr");
+        manager.disable("mineplanet.kr");
+
         return (this.mc.getWindow().getScaledHeight()-(22)) * this.client.data.SkillTimerYpos / 1000;
+        
     }
 
 }
