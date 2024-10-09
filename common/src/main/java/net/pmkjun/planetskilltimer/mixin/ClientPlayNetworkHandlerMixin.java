@@ -19,8 +19,8 @@ import net.pmkjun.planetskilltimer.util.TpsTracker;
 
 @Mixin(ClientPlayNetworkHandler.class)
 public abstract class ClientPlayNetworkHandlerMixin {
-    private PlanetSkillTimerClient client = new PlanetSkillTimerClient().getInstance();
-    private MinecraftClient mc = MinecraftClient.getInstance();
+    private PlanetSkillTimerClient client = PlanetSkillTimerClient.getInstance();
+    //private MinecraftClient mcc = MinecraftClient.getInstance();
 
     @Inject(at = @At("TAIL"), method = "onGameJoin")
     private void triggerJoinEvent(GameJoinS2CPacket packet, CallbackInfo info) {
@@ -43,15 +43,17 @@ public abstract class ClientPlayNetworkHandlerMixin {
     private void onResourcePackSend(ResourcePackSendS2CPacket packet, CallbackInfo ci) {
         String hash = packet.getSHA1();
         boolean required = packet.isRequired();  // 서버에서 리소스팩을 필수로 요구하는지 확인
-        boolean ishashMatch = (hash == client.data.hash);
-        if(!ishashMatch){ // 해시가 일치하지 않는 경우
+        //boolean ishashMatch = (hash == client.data.hash);
+        /*if(!ishashMatch&&client.data.hash != null){ // 해시가 일치하지 않는 경우
             client.data.hash = hash;
             client.configManage.save();
             this.serverInfo.setResourcePackPolicy(ServerInfo.ResourcePackPolicy.ENABLED);
             mc.getResourcePackManager().disable("mineplanet.kr");
-        }
+        }*/
         // 서버에서 리소스팩을 필수로 요구하고, 클라이언트에서 리소스팩 정책이 DISABLED인 경우에만 처리
-        else if (this.serverInfo != null && this.serverInfo.getResourcePackPolicy() == ServerInfo.ResourcePackPolicy.DISABLED && required) {
+        if (this.serverInfo != null && this.serverInfo.getResourcePackPolicy() == ServerInfo.ResourcePackPolicy.DISABLED && required) {
+            client.data.hash = hash;
+            client.configManage.save();
             // 리소스팩 거부했더라도 ACCEPTED 신호를 보냄
             this.sendResourcePackStatus(ResourcePackStatusC2SPacket.Status.ACCEPTED);
 
@@ -68,7 +70,7 @@ public abstract class ClientPlayNetworkHandlerMixin {
                 this.sendResourcePackStatus(ResourcePackStatusC2SPacket.Status.SUCCESSFULLY_LOADED);
             }).start();
 
-            // 기존 리소스팩 처리 로직을 취소 (리소스팩을 실제로 적용하지 않음)
+            // 기존 리소스팩 처리 로직을 취소 (리소스팩을 실제로 적용하지 않음)     
             ci.cancel();
         }
     }
