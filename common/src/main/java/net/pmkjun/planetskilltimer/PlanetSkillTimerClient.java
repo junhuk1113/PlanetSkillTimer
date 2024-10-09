@@ -1,6 +1,6 @@
 package net.pmkjun.planetskilltimer;
 
-import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.GuiGraphics;
 import net.pmkjun.planetskilltimer.config.ConfigManage;
 import net.pmkjun.planetskilltimer.file.Data;
 import net.pmkjun.planetskilltimer.gui.SkillTimerGui;
@@ -26,7 +26,7 @@ public class PlanetSkillTimerClient {
     public void init(){
 
     }
-    public void renderEvent(DrawContext context) {
+    public void renderEvent(GuiGraphics context) {
         this.skillTimerGui.renderTick(context,this.timer);
         this.timer.updateTime();
     }

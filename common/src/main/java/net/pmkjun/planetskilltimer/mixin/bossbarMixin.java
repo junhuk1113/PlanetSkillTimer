@@ -1,10 +1,9 @@
 package net.pmkjun.planetskilltimer.mixin;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.BossBarHud;
-import net.minecraft.client.gui.hud.ClientBossBar;
-import net.minecraft.network.packet.s2c.play.BossBarS2CPacket;
-import net.minecraft.text.Text;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.BossHealthOverlay;
+import net.minecraft.client.gui.components.LerpingBossEvent;
+import net.minecraft.network.protocol.game.ClientboundBossEventPacket;
 import net.pmkjun.planetskilltimer.file.Stat;
 
 import java.util.Map;
@@ -15,17 +14,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(BossBarHud.class)
+@Mixin(BossHealthOverlay.class)
 public class bossbarMixin {
-    @Inject(method = "handlePacket", at={@At(value = "RETURN", ordinal = 0)})
-    public void render(BossBarS2CPacket packet, CallbackInfo ci){
-        MinecraftClient mc = MinecraftClient.getInstance();
+    @Inject(method = "update", at={@At(value = "RETURN", ordinal = 0)})
+    public void render(ClientboundBossEventPacket packet, CallbackInfo ci){
+        Minecraft mc = Minecraft.getInstance();
         //mc.player.sendMessage(Text.literal("handlePacket 함수 실행됨"));
-        BossBarHud bossBarHud = mc.inGameHud.getBossBarHud();
-        Map<UUID, ClientBossBar> bossBars = ((BossBarHudAccessor) bossBarHud).getBossBars();
+        BossHealthOverlay bossBarHud = mc.gui.getBossOverlay();
+        Map<UUID, LerpingBossEvent> bossBars = ((BossBarHudAccessor) bossBarHud).getBossBars();
 
-        for (Map.Entry<UUID, ClientBossBar> entry : bossBars.entrySet()) {
-            ClientBossBar bossBar = entry.getValue();
+        for (Map.Entry<UUID, LerpingBossEvent> entry : bossBars.entrySet()) {
+            LerpingBossEvent bossBar = entry.getValue();
             if (mc.player != null&&bossBar!=null) {
                 //mc.player.sendMessage(Text.literal("BossBar Text: " + bossBar.getName().getString()), false);
                 String bossbarText = bossBar.getName().getString();

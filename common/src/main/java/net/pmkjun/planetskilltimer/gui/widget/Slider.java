@@ -1,19 +1,17 @@
 package net.pmkjun.planetskilltimer.gui.widget;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.navigation.GuiNavigationType;
-import net.minecraft.client.gui.widget.SliderWidget;
-import net.minecraft.client.input.KeyCodes;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.MathHelper;
-public class Slider extends SliderWidget {
-    Text text;
+import net.minecraft.client.gui.components.AbstractSliderButton;
+import net.minecraft.client.gui.navigation.CommonInputs;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+public class Slider extends AbstractSliderButton {
+    Component text;
     protected double minValue;
     protected double maxValue;
     protected double stepSize;
     private boolean sliderFocused;
 
-    public Slider(int x, int y, int width, int height, Text text, float minValue, float maxValue, double currentValue) {
+    public Slider(int x, int y, int width, int height, Component text, float minValue, float maxValue, double currentValue) {
         super(x, y, width, height, text, currentValue);
         this.text = text;
         this.minValue = minValue;
@@ -26,22 +24,22 @@ public class Slider extends SliderWidget {
     private double snapToNearest(double value)
     {
         if(stepSize <= 0D)
-            return MathHelper.clamp(value, 0D, 1D);
+            return Mth.clamp(value, 0D, 1D);
 
-        value = MathHelper.lerp(MathHelper.clamp(value, 0D, 1D), this.minValue, this.maxValue);
+        value = Mth.lerp(Mth.clamp(value, 0D, 1D), this.minValue, this.maxValue);
 
         value = (stepSize * Math.round(value / stepSize));
 
         if (this.minValue > this.maxValue)
         {
-            value = MathHelper.clamp(value, this.maxValue, this.minValue);
+            value = Mth.clamp(value, this.maxValue, this.minValue);
         }
         else
         {
-            value = MathHelper.clamp(value, this.minValue, this.maxValue);
+            value = Mth.clamp(value, this.minValue, this.maxValue);
         }
 
-        return MathHelper.map(value, this.minValue, this.maxValue, 0D, 1D);
+        return Mth.map(value, this.minValue, this.maxValue, 0D, 1D);
     }
 
     public double getValue()
@@ -58,23 +56,9 @@ public class Slider extends SliderWidget {
     }
 
     @Override
-    public void setFocused(boolean focused) {
-        super.setFocused(focused);
-        if (!focused) {
-            this.sliderFocused = false;
-        } else {
-            GuiNavigationType guiNavigationType = MinecraftClient.getInstance().getNavigationType();
-            if (guiNavigationType == GuiNavigationType.MOUSE || guiNavigationType == GuiNavigationType.KEYBOARD_TAB) {
-                this.sliderFocused = true;
-            }
-
-        }
-    }
-
-    @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers)
     {
-        if (KeyCodes.isToggle(keyCode)) {
+        if (CommonInputs.selected(keyCode)) {
             this.sliderFocused = !this.sliderFocused;
             return true;
         } else {
@@ -99,7 +83,7 @@ public class Slider extends SliderWidget {
 
     @Override
     protected void updateMessage() {
-        this.setMessage(Text.literal("").append(text).append(String.valueOf(this.getValueInt())));
+        this.setMessage(Component.literal("").append(text).append(String.valueOf(this.getValueInt())));
     }
 
     @Override

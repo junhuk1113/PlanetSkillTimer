@@ -1,23 +1,23 @@
 package net.pmkjun.planetskilltimer.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
+import com.mojang.blaze3d.vertex.PoseStack;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.sounds.SoundEvents;
 import net.pmkjun.planetskilltimer.PlanetSkillTimerClient;
 import net.pmkjun.planetskilltimer.file.Stat;
 import net.pmkjun.planetskilltimer.util.SkillLevel;
 import net.pmkjun.planetskilltimer.util.Timeformat;
 import net.pmkjun.planetskilltimer.util.Timer;
-import net.pmkjun.planetskilltimer.util.TpsTracker;
 
 public class SkillTimerGui {
-    private MinecraftClient mc;
+    private Minecraft mc;
     private PlanetSkillTimerClient client;
 
     public int one = 0;
@@ -27,20 +27,20 @@ public class SkillTimerGui {
     public int coolend = 0;
 
 
-    private static final Identifier[] SKILL_ICONS = {
-        new Identifier("minecraft", "textures/item/golden_hoe.png"),
-        new Identifier("minecraft", "textures/item/diamond_axe.png"),
-        new Identifier("minecraft", "textures/item/netherite_pickaxe.png"),
-        new Identifier("minecraft", "textures/item/iron_shovel.png")
+    private static final ResourceLocation[] SKILL_ICONS = {
+        new ResourceLocation("minecraft", "textures/item/golden_hoe.png"),
+        new ResourceLocation("minecraft", "textures/item/diamond_axe.png"),
+        new ResourceLocation("minecraft", "textures/item/netherite_pickaxe.png"),
+        new ResourceLocation("minecraft", "textures/item/iron_shovel.png")
     };
-    private static final Identifier WIDGETS = new Identifier("textures/gui/widgets.png");
+    private static final ResourceLocation WIDGETS = new ResourceLocation("textures/gui/widgets.png");
 
     public SkillTimerGui(){
-        this.mc = MinecraftClient.getInstance();
+        this.mc = Minecraft.getInstance();
         this.client = PlanetSkillTimerClient.getInstance();
     }
 
-    public void renderTick(DrawContext context, Timer timer){
+    public void renderTick(GuiGraphics context, Timer timer){
         int i = 0;
         if(!this.client.data.toggleSkilltimer) return; //스킬타이머를 껏을때 실행x
 
@@ -53,8 +53,8 @@ public class SkillTimerGui {
     }
 
 
-    private void render(DrawContext context,Identifier texture,int i,int skilltype, long ms) {
-        MatrixStack poseStack = context.getMatrices();
+    private void render(GuiGraphics context,ResourceLocation texture,int i,int skilltype, long ms) {
+        PoseStack poseStack = context.pose();
         long remaining_activatetime, remaining_cooldowntime;
         int activatetime, cooldowntime;
 
@@ -65,41 +65,41 @@ public class SkillTimerGui {
 
         RenderSystem.enableBlend(); // 블렌딩 활성화
         RenderSystem.defaultBlendFunc();
-        context.drawTexture(WIDGETS, getXpos()+22*i,getYpos(), 24, 23, 22, 22);
+        context.blit(WIDGETS, getXpos()+22*i,getYpos(), 24, 23, 22, 22);
         RenderSystem.disableBlend();
 
-        poseStack.push();
+        poseStack.pushPose();
         poseStack.translate(3+getXpos()+22*i,getYpos()+4-1,0.0D);
         poseStack.scale(0.0625F, 0.0625F, 0.0625F);
 
         RenderSystem.setShaderTexture(0,texture);
-        context.drawTexture(texture, 0, 0, 0, 0, 256, 256);
+        context.blit(texture, 0, 0, 0, 0, 256, 256);
         poseStack.scale(16.0F, 16.0F, 16.0F);
-        poseStack.pop();
+        poseStack.popPose();
         //System.out.println("남은 스킬 지속시간 : "+ (remaining_activatetime/(double)1000) +"초");
         if(remaining_activatetime > 0){
             //남은 지속시간
             //System.out.println("남은 스킬 지속시간 : "+ (remaining_activatetime/(double)1000) +"초");
-            poseStack.push();
+            poseStack.pushPose();
             poseStack.translate((3+getXpos()+22*i+8), (getYpos() + 8-1), 0.0F);
             poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
-            context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal(Timeformat.getString(remaining_activatetime)), 0, 0, Formatting.WHITE.getColorValue());
+            context.drawCenteredString(this.mc.font, Component.literal(Timeformat.getString(remaining_activatetime)), 0, 0, ChatFormatting.WHITE.getColor());
             if (client.data.toggleAlertSound) {
                 if(remaining_activatetime/(double)1000 <= 1 && one == 0 && remaining_activatetime/(double)1000 > 0.2){
-                    this.mc.world.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1f, 1f);
+                    this.mc.level.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 1f, 1f);
                     one = 1;
                 }
                 if(remaining_activatetime/(double)1000 <= 2 && two == 0 && remaining_activatetime/(double)1000 > 0.2){
-                    this.mc.world.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1f, 1f);
+                    this.mc.level.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 1f, 1f);
                     two = 1;
                 }
                 if(remaining_activatetime/(double)1000 <= 3 && thr == 0 && remaining_activatetime/(double)1000 > 0.2) {
-                    this.mc.world.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.BLOCKS, 1f, 1f);
+                    this.mc.level.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.BLOCKS, 1f, 1f);
                     thr = 1;
                 }
 
                 if(remaining_activatetime/(double)1000 < 0.1 && last == 0 && remaining_activatetime/(double)1000 >= 0.05){
-                    this.mc.world.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS, 1f, 1f);
+                    this.mc.level.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 1f, 1f);
                     last = 1;
 
                 }
@@ -112,19 +112,19 @@ public class SkillTimerGui {
             }
 
             //System.out.println("one: " + one + " two:" + two + " three: " + thr);
-            poseStack.pop();
+            poseStack.popPose();
         }
         else if(remaining_cooldowntime > 0){
 
             //System.out.println("남은 스킬 쿨타임 : "+(remaining_cooldowntime/(double)1000)+"초");
-            poseStack.push();
+            poseStack.pushPose();
             poseStack.translate((3+getXpos()+22*i+8), (getYpos() + 8-1), 0.0F);
             poseStack.scale(0.9090909F, 0.9090909F, 0.9090909F);
-            context.drawCenteredTextWithShadow(this.mc.textRenderer, (Text)Text.literal(Timeformat.getString(remaining_cooldowntime)), 0, 0, Formatting.WHITE.getColorValue());
-            poseStack.pop();
+            context.drawCenteredString(this.mc.font, Component.literal(Timeformat.getString(remaining_cooldowntime)), 0, 0, ChatFormatting.WHITE.getColor());
+            poseStack.popPose();
             if (client.data.toggleAlertSound) {
                 if (remaining_cooldowntime / (double) 1000 < 0.1 && remaining_cooldowntime / (double) 1000 > 0.05 && coolend == 0) {
-                    this.mc.world.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS, 1f, 1f);
+                    this.mc.level.playSound(this.mc.player, this.mc.player.getX(), this.mc.player.getY(), this.mc.player.getZ(), SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 1f, 1f);
                     coolend = 1;
                 }
 
@@ -157,10 +157,10 @@ public class SkillTimerGui {
         return remaining_activatetime > 0 || remaining_cooldowntime > 0;
     }
     private int getXpos(){
-        return (this.mc.getWindow().getScaledWidth()-(22*getEnabledSkillCount())) * this.client.data.SkillTimerXpos / 1000;
+        return (this.mc.getWindow().getGuiScaledWidth()-(22*getEnabledSkillCount())) * this.client.data.SkillTimerXpos / 1000;
     }
     private int getYpos(){
-        return (this.mc.getWindow().getScaledHeight()-(22)) * this.client.data.SkillTimerYpos / 1000;
+        return (this.mc.getWindow().getGuiScaledHeight()-(22)) * this.client.data.SkillTimerYpos / 1000;
     }
 
 }

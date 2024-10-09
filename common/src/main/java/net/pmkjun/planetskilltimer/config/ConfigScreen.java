@@ -1,34 +1,34 @@
 package net.pmkjun.planetskilltimer.config;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.Component;
 import net.pmkjun.planetskilltimer.PlanetSkillTimerClient;
 import net.pmkjun.planetskilltimer.gui.widget.Slider;
 
 public class ConfigScreen extends Screen{
 
-    private MinecraftClient mc;
+    private Minecraft mc;
     private PlanetSkillTimerClient client;
     private final Screen parentScreen;
 
-    private ButtonWidget toggleSkillTimerButton;
-    private ButtonWidget toggleAlertSoundButton;
-    private ButtonWidget[] toggleSkillsButton = new ButtonWidget[4];
-    private ButtonWidget toggleTpsCorrectionButton;
+    private Button toggleSkillTimerButton;
+    private Button toggleAlertSoundButton;
+    private Button[] toggleSkillsButton = new Button[4];
+    private Button toggleTpsCorrectionButton;
     String[] SkillList = {"farming","felling","mining","digging"};
     private Slider XPosSlider;
     private Slider YPosSlider;
     private int width, height;
 
     public ConfigScreen(Screen parentScreen) {
-        super(Text.literal("스킬 타이머 설정"));
+        super(Component.literal("스킬 타이머 설정"));
         this.parentScreen = parentScreen;
-        this.mc = MinecraftClient.getInstance();
+        this.mc = Minecraft.getInstance();
         this.client = PlanetSkillTimerClient.getInstance();
 
         this.width = 150;
@@ -36,115 +36,115 @@ public class ConfigScreen extends Screen{
     }
     @Override
     protected void init() {
-        Text text;
+        Component text;
         if(client.data.toggleSkilltimer){
-            text = Text.translatable("planetskilltimer.config.skilltimer").append(
-                    Text.translatable("planetskilltimer.config.enable").getWithStyle(Style.EMPTY.withFormatting(Formatting.GREEN).withBold(true)).get(0));
+            text = Component.translatable("planetskilltimer.config.skilltimer").append(
+                    Component.translatable("planetskilltimer.config.enable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.GREEN).withBold(true)));
         }
         else{
-            text = Text.translatable("planetskilltimer.config.skilltimer").append(
-                    Text.translatable("planetskilltimer.config.disable").getWithStyle(Style.EMPTY.withFormatting(Formatting.RED).withBold(true)).get(0));
+            text = Component.translatable("planetskilltimer.config.skilltimer").append(
+                    Component.translatable("planetskilltimer.config.disable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.RED).withBold(true)));
         }
-        toggleSkillTimerButton = ButtonWidget.builder(text,button -> {
+        toggleSkillTimerButton = Button.builder(text,button -> {
             toggleSkilltimer();
-        }).dimensions(getRegularX(),getRegularY(), 150,20).build();
-        this.addDrawableChild(toggleSkillTimerButton);
+        }).pos(getRegularX(), getRegularY()).size(150, 20).build();
+        this.addRenderableWidget(toggleSkillTimerButton);
 
-        Text text2;
+        Component text2;
         if(client.data.toggleAlertSound){
-            text2 = Text.translatable("planetskilltimer.config.sound").append(
-                    Text.translatable("planetskilltimer.config.enable").getWithStyle(Style.EMPTY.withFormatting(Formatting.GREEN).withBold(true)).get(0));
+            text2 = Component.translatable("planetskilltimer.config.sound").append(
+                    Component.translatable("planetskilltimer.config.enable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.GREEN).withBold(true)));
         }
         else{
-            text2 = Text.translatable("planetskilltimer.config.sound").append(
-                    Text.translatable("planetskilltimer.config.disable").getWithStyle(Style.EMPTY.withFormatting(Formatting.RED).withBold(true)).get(0));
+            text2 = Component.translatable("planetskilltimer.config.sound").append(
+                    Component.translatable("planetskilltimer.config.disable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.RED).withBold(true)));
         }
-        toggleAlertSoundButton = ButtonWidget.builder(text2,button -> {
+        toggleAlertSoundButton = Button.builder(text2,button -> {
             toggleAlertSound();
-        }).dimensions(getRegularX(),getRegularY()+(20+2)*1, 150,20).build();
-        this.addDrawableChild(toggleAlertSoundButton);
+        }).pos(getRegularX(),getRegularY()+(20+2)*1).size(150,20).build();
+        this.addRenderableWidget(toggleAlertSoundButton);
 
         for(int i = 0; i < 4 ; i++){
             if(client.data.toggleSkills[i]){
-                text = Text.translatable("planetskilltimer.config."+SkillList[i]).append(
-                        Text.translatable("planetskilltimer.config.enable").getWithStyle(Style.EMPTY.withFormatting(Formatting.GREEN).withBold(true)).get(0));
+                text = Component.translatable("planetskilltimer.config."+SkillList[i]).append(
+                        Component.translatable("planetskilltimer.config.enable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.GREEN).withBold(true)));
             }
             else{
-                text = Text.translatable("planetskilltimer.config."+SkillList[i]).append(
-                        Text.translatable("planetskilltimer.config.disable").getWithStyle(Style.EMPTY.withFormatting(Formatting.RED).withBold(true)).get(0));
+                text = Component.translatable("planetskilltimer.config."+SkillList[i]).append(
+                        Component.translatable("planetskilltimer.config.disable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.RED).withBold(true)));
             }
             switch (i){
                 case 0:
-                    toggleSkillsButton[i] = ButtonWidget.builder(text,button -> {
+                    toggleSkillsButton[i] = Button.builder(text,button -> {
                         toggleSkills(0);
-                    }).dimensions(getRegularX(),getRegularY()+(20+2)*(i+2), 150,20).build();
+                    }).pos(getRegularX(),getRegularY()+(20+2)*(i+2)).size(150,20).build();
                     break;
                 case 1:
-                    toggleSkillsButton[i] = ButtonWidget.builder(text,button -> {
+                    toggleSkillsButton[i] = Button.builder(text,button -> {
                         toggleSkills(1);
-                    }).dimensions(getRegularX(),getRegularY()+(20+2)*(i+2), 150,20).build();
+                    }).pos(getRegularX(),getRegularY()+(20+2)*(i+2)).size(150,20).build();
                     break;
                 case 2:
-                    toggleSkillsButton[i] = ButtonWidget.builder(text,button -> {
+                    toggleSkillsButton[i] = Button.builder(text,button -> {
                         toggleSkills(2);
-                    }).dimensions(getRegularX(),getRegularY()+(20+2)*(i+2), 150,20).build();
+                    }).pos(getRegularX(),getRegularY()+(20+2)*(i+2)).size(150,20).build();
                     break;
                 case 3:
-                    toggleSkillsButton[i] = ButtonWidget.builder(text,button -> {
+                    toggleSkillsButton[i] = Button.builder(text,button -> {
                         toggleSkills(3);
-                    }).dimensions(getRegularX(),getRegularY()+(20+2)*(i+2), 150,20).build();
+                    }).pos(getRegularX(),getRegularY()+(20+2)*(i+2)).size(150,20).build();
                     break;
 
             }
 
-            this.addDrawableChild(toggleSkillsButton[i]);
+            this.addRenderableWidget(toggleSkillsButton[i]);
         }
 
-        ButtonWidget exitButton = ButtonWidget.builder(Text.translatable("planetskilltimer.config.exit"), button -> {
+        Button exitButton = Button.builder(Component.translatable("planetskilltimer.config.exit"), button -> {
             mc.setScreen(parentScreen);
-        }).dimensions(mc.getWindow().getScaledWidth() / 2 - 35, mc.getWindow().getScaledHeight() - 22, 70, 20).build();
-        this.addDrawableChild(exitButton);
+        }).pos(mc.getWindow().getGuiScaledWidth() / 2 - 35, mc.getWindow().getGuiScaledHeight() - 22).size(70, 20).build();
+        this.addRenderableWidget(exitButton);
 
-        XPosSlider = new Slider(getRegularX(), getRegularY()+(20+2)*6,150,20,Text.literal("X : "),0,1000,this.client.data.SkillTimerXpos){
+        XPosSlider = new Slider(getRegularX(), getRegularY()+(20+2)*6,150,20,Component.literal("X : "),0,1000,this.client.data.SkillTimerXpos){
             @Override
             protected void applyValue() {
                 client.data.SkillTimerXpos = this.getValueInt();
                 client.configManage.save();
             }
         };
-        this.addDrawableChild(XPosSlider);
-        YPosSlider = new Slider(getRegularX(), getRegularY()+(20+2)*7,150,20,Text.literal("Y : "),0,1000,this.client.data.SkillTimerYpos){
+        this.addRenderableWidget(XPosSlider);
+        YPosSlider = new Slider(getRegularX(), getRegularY()+(20+2)*7,150,20,Component.literal("Y : "),0,1000,this.client.data.SkillTimerYpos){
             @Override
             protected void applyValue() {
                 client.data.SkillTimerYpos = this.getValueInt();
                 client.configManage.save();
             }
         };
-        this.addDrawableChild(YPosSlider);
-        toggleTpsCorrectionButton = ButtonWidget.builder(Text.translatable("planetskilltimer.config.tpscorrection"), button -> {
+        this.addRenderableWidget(YPosSlider);
+        toggleTpsCorrectionButton = Button.builder(Component.translatable("planetskilltimer.config.tpscorrection"), button -> {
             toggleTpsCorrection();
             setTpsCorrectionButtonText();
-        }).dimensions(getRegularX(), getRegularY()+(20+2)*8, 150, 20).build();
+        }).pos(getRegularX(), getRegularY()+(20+2)*8).size(150, 20).build();
         setTpsCorrectionButtonText();
-        this.addDrawableChild(toggleTpsCorrectionButton);
+        this.addRenderableWidget(toggleTpsCorrectionButton);
     }
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        this.renderBackground(context);
-        XPosSlider.render(context,mouseX,mouseY,delta);
-        YPosSlider.render(context,mouseX,mouseY,delta);
-        super.render(context, mouseX, mouseY, delta);
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
+        this.renderBackground(guiGraphics);
+        XPosSlider.render(guiGraphics,mouseX,mouseY,delta);
+        YPosSlider.render(guiGraphics,mouseX,mouseY,delta);
+        super.render(guiGraphics, mouseX, mouseY, delta);
     }
 
     private void toggleSkilltimer(){
         if(client.data.toggleSkilltimer){
-            toggleSkillTimerButton.setMessage(Text.translatable("planetskilltimer.config.skilltimer").append(
-                    Text.translatable("planetskilltimer.config.disable").getWithStyle(Style.EMPTY.withFormatting(Formatting.RED).withBold(true)).get(0)));
+            toggleSkillTimerButton.setMessage(Component.translatable("planetskilltimer.config.skilltimer").append(
+                    Component.translatable("planetskilltimer.config.disable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.RED).withBold(true))));
             client.data.toggleSkilltimer = false;
             client.configManage.save();
         }
         else{
-            toggleSkillTimerButton.setMessage(Text.translatable("planetskilltimer.config.skilltimer").append(
-                    Text.translatable("planetskilltimer.config.enable").getWithStyle(Style.EMPTY.withFormatting(Formatting.GREEN).withBold(true)).get(0)));
+            toggleSkillTimerButton.setMessage(Component.translatable("planetskilltimer.config.skilltimer").append(
+                    Component.translatable("planetskilltimer.config.enable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.GREEN).withBold(true))));
             client.data.toggleSkilltimer = true ;
             client.configManage.save();
         }
@@ -152,14 +152,14 @@ public class ConfigScreen extends Screen{
 
     private void toggleAlertSound(){
         if(client.data.toggleAlertSound){
-            toggleAlertSoundButton.setMessage(Text.translatable("planetskilltimer.config.sound").append(
-                    Text.translatable("planetskilltimer.config.disable").getWithStyle(Style.EMPTY.withFormatting(Formatting.RED).withBold(true)).get(0)));
+            toggleAlertSoundButton.setMessage(Component.translatable("planetskilltimer.config.sound").append(
+                    Component.translatable("planetskilltimer.config.disable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.RED).withBold(true))));
             client.data.toggleAlertSound = false;
             client.configManage.save();
         }
         else{
-            toggleAlertSoundButton.setMessage(Text.translatable("planetskilltimer.config.sound").append(
-                    Text.translatable("planetskilltimer.config.enable").getWithStyle(Style.EMPTY.withFormatting(Formatting.GREEN).withBold(true)).get(0)));
+            toggleAlertSoundButton.setMessage(Component.translatable("planetskilltimer.config.sound").append(
+                    Component.translatable("planetskilltimer.config.enable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.GREEN).withBold(true))));
             client.data.toggleAlertSound = true ;
             client.configManage.save();
         }
@@ -167,14 +167,14 @@ public class ConfigScreen extends Screen{
 
     private void toggleSkills(int skilltype){
         if(client.data.toggleSkills[skilltype]){
-            toggleSkillsButton[skilltype].setMessage(Text.translatable("planetskilltimer.config."+SkillList[skilltype]).append(
-                    Text.translatable("planetskilltimer.config.disable").getWithStyle(Style.EMPTY.withFormatting(Formatting.RED).withBold(true)).get(0)));
+            toggleSkillsButton[skilltype].setMessage(Component.translatable("planetskilltimer.config."+SkillList[skilltype]).append(
+                    Component.translatable("planetskilltimer.config.disable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.RED).withBold(true))));
             client.data.toggleSkills[skilltype] = false;
             client.configManage.save();
         }
         else{
-            toggleSkillsButton[skilltype].setMessage(Text.translatable("planetskilltimer.config."+SkillList[skilltype]).append(
-                    Text.translatable("planetskilltimer.config.enable").getWithStyle(Style.EMPTY.withFormatting(Formatting.GREEN).withBold(true)).get(0)));
+            toggleSkillsButton[skilltype].setMessage(Component.translatable("planetskilltimer.config."+SkillList[skilltype]).append(
+                    Component.translatable("planetskilltimer.config.enable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.GREEN).withBold(true))));
             client.data.toggleSkills[skilltype] = true ;
             client.configManage.save();
         }
@@ -185,20 +185,20 @@ public class ConfigScreen extends Screen{
     }
     private void setTpsCorrectionButtonText(){
         if(client.data.toggleTpsCorrection){
-            toggleTpsCorrectionButton.setMessage(Text.translatable("planetskilltimer.config.tpscorrection").append(
-                Text.translatable("planetskilltimer.config.enable").getWithStyle(Style.EMPTY.withFormatting(Formatting.GREEN).withBold(true)).get(0)));
+            toggleTpsCorrectionButton.setMessage(Component.translatable("planetskilltimer.config.tpscorrection").append(
+                Component.translatable("planetskilltimer.config.enable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.GREEN).withBold(true))));
         }
         else{
-            toggleTpsCorrectionButton.setMessage(Text.translatable("planetskilltimer.config.tpscorrection").append(
-                Text.translatable("planetskilltimer.config.disable").getWithStyle(Style.EMPTY.withFormatting(Formatting.RED).withBold(true)).get(0)));
+            toggleTpsCorrectionButton.setMessage(Component.translatable("planetskilltimer.config.tpscorrection").append(
+                Component.translatable("planetskilltimer.config.disable").withStyle(Style.EMPTY.applyFormat(ChatFormatting.RED).withBold(true))));
         }
     }
 
     int getRegularX() {
-        return  mc.getWindow().getScaledWidth() / 2 - width / 2;
+        return  mc.getWindow().getGuiScaledWidth() / 2 - width / 2;
     }
 
     int getRegularY() {
-        return mc.getWindow().getScaledHeight() / 2 - height / 2;
+        return mc.getWindow().getGuiScaledHeight() / 2 - height / 2;
     }
 }

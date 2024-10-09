@@ -1,8 +1,9 @@
 package net.pmkjun.planetskilltimer.forge.input;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
+import com.mojang.blaze3d.platform.InputConstants;
+
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
@@ -12,8 +13,8 @@ import net.pmkjun.planetskilltimer.config.ConfigScreen;
 import net.pmkjun.planetskilltimer.input.IKeyMappings;
 
 public class KeyMappings implements IKeyMappings {
-    public static KeyBinding openSettingScreen =
-            new KeyBinding("planetskilltimer.key.open_settings", InputUtil.GLFW_KEY_J, "planetskilltimer.key.open_settings");
+    public static KeyMapping openSettingScreen =
+            new KeyMapping("planetskilltimer.key.open_settings", InputConstants.KEY_J, "planetskilltimer.key.open_settings");
 
     @Override
     public void register() {
@@ -27,11 +28,11 @@ public class KeyMappings implements IKeyMappings {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        MinecraftClient mc = MinecraftClient.getInstance();
+        Minecraft mc = Minecraft.getInstance();
 
         if(event.phase == TickEvent.Phase.END) {
-            while(openSettingScreen.wasPressed()) {
-                mc.setScreen(new ConfigScreen(mc.currentScreen));
+            while(openSettingScreen.consumeClick()) {
+                mc.setScreen(new ConfigScreen(mc.screen));
             }
         }
     }
